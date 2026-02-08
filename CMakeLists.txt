@@ -9,14 +9,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # This ensures dependencies are available when needed
 include(FetchContent)
 
-# Fetch springbootplusplus-web (arduinolib2)
+# Fetch springbootplusplus_web (springbootplusplus_web)
 FetchContent_Declare(
-    springbootplusplus-web
-    GIT_REPOSITORY https://github.com/compilerNayan/arduinolib2.git
+    springbootplusplus_web
+    GIT_REPOSITORY https://github.com/compilerNayan/springbootplusplus_web.git
     GIT_TAG        main  # Use the main branch
 )
 
-FetchContent_MakeAvailable(springbootplusplus-web)
+FetchContent_MakeAvailable(springbootplusplus_web)
 
 # Create header-only library (INTERFACE library)
 add_library(cpp_logger INTERFACE)
@@ -32,18 +32,18 @@ target_include_directories(cpp_logger INTERFACE
     $<INSTALL_INTERFACE:include>
 )
 
-# Link to springbootplusplus-web (arduinolib2)
+# Link to springbootplusplus_web (springbootplusplus_web)
 # Try the namespaced target first, fallback to non-namespaced
-if(TARGET springbootplusplus-web::springbootplusplus-web)
-    target_link_libraries(cpp_logger INTERFACE springbootplusplus-web::springbootplusplus-web)
-elseif(TARGET springbootplusplus-web)
-    target_link_libraries(cpp_logger INTERFACE springbootplusplus-web)
+if(TARGET springbootplusplus_web::springbootplusplus_web)
+    target_link_libraries(cpp_logger INTERFACE springbootplusplus_web::springbootplusplus_web)
+elseif(TARGET springbootplusplus_web)
+    target_link_libraries(cpp_logger INTERFACE springbootplusplus_web)
 else()
     # Fallback: manually add include directory if target doesn't exist
-    FetchContent_GetProperties(springbootplusplus-web)
-    if(springbootplusplus-web_SOURCE_DIR)
+    FetchContent_GetProperties(springbootplusplus_web)
+    if(springbootplusplus_web_SOURCE_DIR)
         target_include_directories(cpp_logger INTERFACE
-            $<BUILD_INTERFACE:${springbootplusplus-web_SOURCE_DIR}/src>
+            $<BUILD_INTERFACE:${springbootplusplus_web_SOURCE_DIR}/src>
         )
     endif()
 endif()
