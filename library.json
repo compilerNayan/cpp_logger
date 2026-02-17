@@ -3,21 +3,14 @@
   "version": "1.0.0",
   "description": "A header-only PlatformIO library that depends on springbootplusplus_web (springbootplusplus_web)",
   "keywords": "arduino, utility, logging",
-  "authors": [
-    {
-      "name": "Nayan"
-    }
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/compilerNayan/cpp_logger.git"
-  },
+  "authors": [{"name": "Nayan"}],
+  "repository": {"type": "git", "url": "https://github.com/compilerNayan/cpp_logger.git"},
   "dependencies": {
-    "springbootplusplus_web": "https://github.com/compilerNayan/springbootplusplus_web.git"
+    "springbootplusplus_web": "https://github.com/compilerNayan/springbootplusplus_web.git",
+    "arduino_remote_storage": "https://github.com/compilerNayan/arduino_remote_storage.git"
   },
   "license": "MIT",
   "homepage": "",
   "frameworks": "arduino",
   "platforms": "*"
 }
-
