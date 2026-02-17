@@ -4,13 +4,13 @@
 
 #include <StandardDefines.h>
 #include "ILogSink.h"
-#include <IArduinoRemoteStorage.h>
+#include <ILogBuffer.h>
 #include <Arduino.h>
 
 /* @Component */
 class ArduinoLogSink final : public ILogSink {
     /* @Autowired */
-    Private IArduinoRemoteStoragePtr remoteStorage;
+    Private ILogBufferPtr logBuffer;
 
     Public
         ArduinoLogSink() = default;
@@ -19,7 +19,7 @@ class ArduinoLogSink final : public ILogSink {
 
         Public Virtual Void WriteLog(CStdString& message) override {
             Serial.println(message.c_str());
-            //remoteStorage->StoreLog(message);
+            logBuffer->AddLog(millis(), message);
         }
 };
 
