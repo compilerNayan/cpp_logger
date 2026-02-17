@@ -19,7 +19,7 @@ class ArduinoLogSink final : public ILogSink {
 
         Public Virtual Void WriteLog(CStdString& message) override {
             Serial.println(message.c_str());
-            remoteStorage->StoreLog(message);
+            //remoteStorage->StoreLog(message);
         }
 };
 
