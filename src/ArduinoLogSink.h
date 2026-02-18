@@ -5,15 +5,13 @@
 #include <StandardDefines.h>
 #include "ILogSink.h"
 #include <ILogBuffer.h>
-#include <IDeviceTime.h>
 #include <Arduino.h>
+#include <ctime>
 
 /* @Component */
 class ArduinoLogSink final : public ILogSink {
     /* @Autowired */
     Private ILogBufferPtr logBuffer;
-    /* @Autowired */
-    Private IDeviceTimePtr deviceTime;
 
     Public
         ArduinoLogSink() = default;
@@ -22,7 +20,8 @@ class ArduinoLogSink final : public ILogSink {
 
         Public Virtual Void WriteLog(CStdString& message) override {
             Serial.println(message.c_str());
-            ULongLong timestampMs = deviceTime ? deviceTime->GetCurrentTimeMsFromEpoch() : 0ULL;
+            time_t nowSec = time(nullptr);
+            ULongLong timestampMs = (nowSec != (time_t)-1) ? (ULongLong)nowSec * 1000ULL : 0ULL;
             logBuffer->AddLog((ULong)timestampMs, message);
         }
 };
