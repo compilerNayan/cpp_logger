@@ -26,7 +26,7 @@ class ArduinoLogSink final : public ILogSink {
 
             char timeBuf[24];
             if (nowSec != (time_t)-1 && nowSec > 0) {
-                struct tm* t = gmtime(&nowSec);
+                struct tm* t = localtime(&nowSec);
                 if (t && strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d %H:%M:%S", t) > 0) { /* ok */ }
                 else snprintf(timeBuf, sizeof(timeBuf), "(time?)");
             } else {
