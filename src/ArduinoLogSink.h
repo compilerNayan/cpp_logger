@@ -5,13 +5,15 @@
 #include <StandardDefines.h>
 #include "ILogSink.h"
 #include <ILogBuffer.h>
+#include <IDeviceTime.h>
 #include <Arduino.h>
-#include <time.h>
 
 /* @Component */
 class ArduinoLogSink final : public ILogSink {
     /* @Autowired */
     Private ILogBufferPtr logBuffer;
+    /* @Autowired */
+    Private IDeviceTimePtr deviceTime;
 
     Public
         ArduinoLogSink() = default;
@@ -20,10 +22,8 @@ class ArduinoLogSink final : public ILogSink {
 
         Public Virtual Void WriteLog(CStdString& message) override {
             Serial.println(message.c_str());
-            // Use RTC (UTC) time in ms when set by NTP, so log timestamps are 2026 not 1970.
-            time_t now = time(nullptr);
-            ULong timestampMs = (now > 0) ? (ULong)now * 1000 : (ULong)millis();
-            logBuffer->AddLog(timestampMs, message);
+            ULongLong timestampMs = deviceTime ? deviceTime->GetCurrentTimeMsFromEpoch() : 0ULL;
+            logBuffer->AddLog((ULong)timestampMs, message);
         }
 };
 
