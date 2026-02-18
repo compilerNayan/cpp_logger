@@ -20,10 +20,12 @@ class ArduinoLogSink final : public ILogSink {
 
         Public Virtual Void WriteLog(CStdString& message) override {
             time_t nowSec = time(nullptr);
-            ULongLong timestampMs = (nowSec != (time_t)-1) ? (ULongLong)nowSec * 1000ULL : 0ULL;
+            // Only use time() for key when NTP has synced (year 2001+); otherwise use millis() so publish can convert later
+            const time_t kMinValidEpoch = 978307200;  // 2001-01-01 00:00:00 UTC
+            Bool timeValid = (nowSec != (time_t)-1 && nowSec >= kMinValidEpoch);
 
             char timeBuf[24];
-            if (nowSec != (time_t)-1) {
+            if (nowSec != (time_t)-1 && nowSec > 0) {
                 struct tm* t = gmtime(&nowSec);
                 if (t && strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d %H:%M:%S", t) > 0) { /* ok */ }
                 else snprintf(timeBuf, sizeof(timeBuf), "(time?)");
@@ -35,7 +37,14 @@ class ArduinoLogSink final : public ILogSink {
             Serial.print("] ");
             Serial.println(message.c_str());
 
-            logBuffer->AddLog((ULong)timestampMs, message);
+            static ULong seqPerSec = 0;
+            ULongLong key;
+            if (timeValid) {
+                key = (ULongLong)nowSec * 1000ULL + (ULong)(seqPerSec++ % 1000);
+            } else {
+                key = (ULongLong)millis() * 1000ULL + (ULong)(seqPerSec++ % 1000);
+            }
+            logBuffer->AddLog(key, message);
         }
 };
 
