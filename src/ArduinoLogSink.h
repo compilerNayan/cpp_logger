@@ -19,9 +19,22 @@ class ArduinoLogSink final : public ILogSink {
         Public Virtual ~ArduinoLogSink() override = default;
 
         Public Virtual Void WriteLog(CStdString& message) override {
-            Serial.println(message.c_str());
             time_t nowSec = time(nullptr);
             ULongLong timestampMs = (nowSec != (time_t)-1) ? (ULongLong)nowSec * 1000ULL : 0ULL;
+
+            char timeBuf[24];
+            if (nowSec != (time_t)-1) {
+                struct tm* t = gmtime(&nowSec);
+                if (t && strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d %H:%M:%S", t) > 0) { /* ok */ }
+                else snprintf(timeBuf, sizeof(timeBuf), "(time?)");
+            } else {
+                snprintf(timeBuf, sizeof(timeBuf), "(no time)");
+            }
+            Serial.print("[");
+            Serial.print(timeBuf);
+            Serial.print("] ");
+            Serial.println(message.c_str());
+
             logBuffer->AddLog((ULong)timestampMs, message);
         }
 };
