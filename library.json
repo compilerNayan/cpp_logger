@@ -6,8 +6,7 @@
   "authors": [{"name": "Nayan"}],
   "repository": {"type": "git", "url": "https://github.com/compilerNayan/cpp_logger.git"},
   "dependencies": {
-    "compilerNayan/cpp_core": "https://github.com/compilerNayan/cpp_core.git",
-    "arduino_remote_storage": "https://github.com/compilerNayan/arduino_remote_storage.git"
+    "compilerNayan/cpp_core": "https://github.com/compilerNayan/cpp_core.git"
   },
   "license": "MIT",
   "homepage": "",

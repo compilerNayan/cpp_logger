@@ -4,7 +4,7 @@
 
 #include <StandardDefines.h>
 #include "ILogSink.h"
-#include <ILogBuffer.h>
+//#include <ILogBuffer.h>
 #include <Arduino.h>
 #include <ctime>
 
@@ -44,7 +44,7 @@ class ArduinoLogSink final : public ILogSink {
             } else {
                 key = (ULongLong)millis() * 1000ULL + (ULong)(seqPerSec++ % 1000);
             }
-            logBuffer->AddLog(key, message);
+            //logBuffer->AddLog(key, message);
         }
 };
 
