@@ -10,8 +10,8 @@
 
 /* @Component */
 class ArduinoLogSink final : public ILogSink {
-    /* @Autowired */
-    Private ILogBufferPtr logBuffer;
+  //  /* @Autowired */
+  //  Private ILogBufferPtr logBuffer;
 
     Public
         ArduinoLogSink() = default;
