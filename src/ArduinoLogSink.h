@@ -4,14 +4,14 @@
 
 #include <StandardDefines.h>
 #include "ILogSink.h"
-//#include <ILogBuffer.h>
+#include "ILogBuffer.h"
 #include <Arduino.h>
 #include <ctime>
 
 /* @Component */
 class ArduinoLogSink final : public ILogSink {
-  //  /* @Autowired */
-  //  Private ILogBufferPtr logBuffer;
+    /* @Autowired */
+    Private ILogBufferPtr logBuffer;
 
     Public
         ArduinoLogSink() = default;
@@ -44,7 +44,7 @@ class ArduinoLogSink final : public ILogSink {
             } else {
                 key = (ULongLong)millis() * 1000ULL + (ULong)(seqPerSec++ % 1000);
             }
-            //logBuffer->AddLog(key, message);
+            logBuffer->AddLog(key, message);
         }
 };
 
