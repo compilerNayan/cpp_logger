@@ -59,6 +59,26 @@ class LogBuffer : public ILogBuffer {
         }
         return out;
     }
+
+    Public StdMap<ULongLong, StdString> TakeLogsByApproxBytes(Size maxBytes) override {
+        std::lock_guard<std::mutex> lock(mutex_);
+        StdMap<ULongLong, StdString> out;
+        if (maxBytes == 0) return out;
+
+        Size usedBytes = 0;
+        for (auto it = logs_.begin(); it != logs_.end(); ) {
+            // Approx per-entry bytes: timestamp key + message payload bytes.
+            const Size entryBytes = sizeof(it->first) + it->second.size();
+
+            // If we already selected some logs, stop before crossing budget.
+            if (!out.empty() && (usedBytes + entryBytes) > maxBytes) break;
+
+            usedBytes += entryBytes;
+            out[it->first] = it->second;
+            it = logs_.erase(it);
+        }
+        return out;
+    }
 };
 
 #endif /* LOGBUFFER_H */

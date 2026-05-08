@@ -18,6 +18,9 @@ class ILogBuffer {
 
     /** Take at most maxCount logs (oldest first) and remove them from the buffer. Use to limit payload size and avoid OOM. */
     Public Virtual StdMap<ULongLong, StdString> TakeLogsAtMost(Size maxCount) = 0;
+
+    /** Take logs (oldest first) whose total size is approximately <= maxBytes, and remove them from the buffer. */
+    Public Virtual StdMap<ULongLong, StdString> TakeLogsByApproxBytes(Size maxBytes) = 0;
 };
 
 #endif /* ILOGBUFFER_H */
